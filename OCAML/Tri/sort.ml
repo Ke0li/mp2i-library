@@ -57,3 +57,13 @@ let rec tri = function
   | [e] -> [e] (* tri ne termine pas sans ce cas *)
   | l -> let l1, l2 = split l in
 fusion (tri l1) (tri l2);;
+
+
+
+(*renvoie le maximum du tableau*)
+let _maximum t = 
+    let m = ref t.(0) in
+    for i=1 to Array.length t - 1 do
+        m := max t.(i) !m
+    done;
+    !m;;
