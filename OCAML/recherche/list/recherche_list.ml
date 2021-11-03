@@ -1,15 +1,3 @@
-(*verifie si la liste contient l'element e *)
-let rec mem l e = match l with
-    | [] -> false
-    | x::q -> x = e || mem q e
-    
-
-
-
-
-
-
-
 
 (* [has_cycle l []] renvoie si oui ou non la liste l contient un cycle, complexité en mémoire O(n)*)
 let rec has_cycle l vus = match l with
