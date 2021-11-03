@@ -1,3 +1,10 @@
+(*renvoie le maximum du tableau*)
+let _maximum t = 
+    let m = ref t.(0) in
+    for i=1 to Array.length t - 1 do
+        m := max t.(i) !m
+    done;
+    !m;;
 
 (*renvoie une liste contenant les elements de l1 puis les elements de l2*)
 let rec _concat l1 l2 = match l1 with
@@ -60,10 +67,3 @@ fusion (tri l1) (tri l2);;
 
 
 
-(*renvoie le maximum du tableau*)
-let _maximum t = 
-    let m = ref t.(0) in
-    for i=1 to Array.length t - 1 do
-        m := max t.(i) !m
-    done;
-    !m;;
