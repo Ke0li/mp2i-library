@@ -33,7 +33,7 @@ let stack_pop p = (* 0(1) *)
 
 type 'a queue_2lists = {l1 : 'a list; l2 : 'a list}
 
-(*implementation persistante avec deux listes*)7
+(*implementation persistante avec deux listes*)
 
 let queue_empty f = f.l1 = [] && f.l2 = [];;
 
@@ -54,12 +54,13 @@ mutable next : 'a l2c
 
 (*implémentation avec une liste chaînée *)
 type 'a cell =
-| Nil
-| Cons of { content: 'a; mutable next: 'a cell }
+  | Nil
+  | Cons of { content: 'a; mutable next: 'a cell }
+
 type 'a t = {
-mutable length: int;
-mutable first: 'a cell;
-mutable last: 'a cell
+  mutable length: int;
+  mutable first: 'a cell;
+  mutable last: 'a cell
 }
 
 (*dictionnaire*)
@@ -76,5 +77,61 @@ let get k l =
   List.filter (fun c -> fst c = k) l
     |> List.map snd;;
 
+(*table de hachage*)
+
+type ('k, 'v) hashtable = {
+t : ('k * 'v) option array;
+h : 'k -> int
+};;
+
+let hashtable_add ht (k, v) =
+  ht.t.(ht.h k) <- Some v;;
+
+let hashtable_get ht k =
+  ht.t.(ht.h k);;
+
+let hashtable_del ht k =
+  ht.t.(ht.h k) <- None;;
+
+(*implementation de dict*)
+
+type ('k, 'v) dict = {
+  add : 'k * 'v -> unit;
+  del : 'k -> unit;
+  get : 'k -> 'v option
+
+* n est la taille du tableau à utiliser *)
+let dict_of_hashtable n =
+
+let ht = {
+t = Array.make n None;
+h = fun k -> k mod n
+} in {
+add = hashtable_add ht;
+get = hashtable_get ht;
+del = hashtable_del ht
+}
+}
+
+(*ensemble*)
+type 'a set = {
+add : 'a -> unit;
+del : 'a -> unit;
+has : 'a -> bool
+}
 
 
+type ('k, 'v) dict = {
+  add : 'k * 'v -> unit;
+  del : 'k -> unit;
+  get : 'k -> 'v option
+}
+
+
+let set_of_dict d = {
+  add = (fun e -> d.add (e, 0));
+  del = (fun e -> d.del e);
+  get = (fun e -> match d.get e with
+    | None -> false
+    | Some _ -> true)
+}
